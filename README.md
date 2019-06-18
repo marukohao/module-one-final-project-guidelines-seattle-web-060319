@@ -57,3 +57,23 @@ Projects need to be approved prior to launching into them, so take some time to 
 # in config/environment.rb add this line:
 ActiveRecord::Base.logger = nil
 ```
+
+
+Github Jobs
+Our three models will be:
+1. Users(name, birthday, languages(array))
+2. applications(users, jobs)
+3. Jobs(company, location, title, description, type, created_at)
+
+User Stories
+1. As a user, I want to able to enter my name and retrieve all the jobs that I have applied.
+2. *As a user, I should be able to search jobs from (location) with (title).
+3. As a user, I want to able to search job descriptions for keywords like diversity or ....
+4. As a user, I want to know how many other users have applied for the specific job.
+5. *As a user, I want to search jobs by languages.
+6. *As a user, I want to able to search jobs by type(part_time, full_time), location, title.(or any combanition)
+7. As a user, I want the 10 newest jobs that have been posted with my search title.
+8. As a user, I want to able to get the job that has been applied to the most/least.
+9. *As a user, I want to change the languages I know. (update)
+10. *As a user, I want to delete a application that I have applied.(delete)
+11. AS a user, I want to know if I have already existed in this system.
