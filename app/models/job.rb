@@ -1,3 +1,7 @@
-Class Job < ActiveRecord::Base
+class Job < ActiveRecord::Base
   has_many :applications
-end 
+
+
+
+
+end

@@ -1,4 +1,4 @@
-Class User < ActiveRecord::Base
+class User < ActiveRecord::Base
   has_many :applications
   has_many :languages
-end 
+end
