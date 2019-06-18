@@ -62,7 +62,7 @@ ActiveRecord::Base.logger = nil
 Github Jobs
 Our three models will be:
 1. Users(name, birthday, languages(array))
-2. applications(users, jobs)
+2. applications(users, jobs, app_made_at)
 3. Jobs(company, location, title, description, type, created_at)
 
 User Stories
