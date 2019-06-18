@@ -6,6 +6,7 @@ class CreateJobs < ActiveRecord::Migration[5.2]
       t.string :description
       t.boolean :type
       t.string :created_at
+      t.string :title
     end
   end
 end

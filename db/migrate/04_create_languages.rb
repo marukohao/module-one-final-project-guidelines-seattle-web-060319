@@ -5,5 +5,5 @@ class CreateApplications < ActiveRecord::Migration[5.2]
       t.integer :user_id
     end
   end
-  
+
 end
