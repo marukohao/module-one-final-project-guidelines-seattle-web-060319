@@ -18,14 +18,27 @@ def returning_user
   puts "5. Exit."
 end
 
-def job_search_descrption(returning_user_response)
+def job_search
   #user will search for job here
   puts "Great. What are some keywords you are looking for in a job. It could job title, or languages you use."
+  ui1 = gets.chomp
+  puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'"
+  ui2 = gets.chomp
+  puts "Do you only want full-time jobs? Please choose a number."
+  puts "1. Yes."
+  puts "2. No."
+  ui3 = gets.chomp
+    if ui3 == "1"
+      ui3 = "on"
+    else
+      ui3 = ""
+    end
+  create_jobs(ui1, ui2, ui3)
 end
 
-def job_search_location
-  puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'"
-end
+# def job_search_location
+#   puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'"
+# end
 
 def job_search_FTE
   puts "Do you only want full-time jobs? Please choose a number."

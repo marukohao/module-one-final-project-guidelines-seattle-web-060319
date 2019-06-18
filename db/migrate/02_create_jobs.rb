@@ -10,3 +10,4 @@ class CreateJobs < ActiveRecord::Migration[5.2]
     end
   end
 end
+
