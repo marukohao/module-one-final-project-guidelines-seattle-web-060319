@@ -1,4 +1,4 @@
-Class CreateJobs < ActiveRecord::Migration[5.2]
+class CreateJobs < ActiveRecord::Migration[5.2]
  def change
     create_table :jobs do |t|
       t.string :company
@@ -9,4 +9,3 @@ Class CreateJobs < ActiveRecord::Migration[5.2]
     end
   end
 end
-
