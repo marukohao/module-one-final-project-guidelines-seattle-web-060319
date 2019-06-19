@@ -5,8 +5,8 @@ require 'pry'
 
 #here we will put all of our methods to run
 
-welcome
-user_login
 
-pry.start
-0
+cli = CliInterface.new
+cli.user_login
+
+

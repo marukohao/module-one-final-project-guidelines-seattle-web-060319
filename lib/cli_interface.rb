@@ -1,5 +1,5 @@
 #here we will put all of our messages for user input
-
+class CliInterface
 
 
 def welcome
@@ -7,7 +7,7 @@ def welcome
 end
 
 def user_login
-  puts "Are you a new user or existing user? Please input a number."
+  puts "Are you a new user or existing user? Please input a number.".colorize(:color => :light_blue, :background => :red)
   puts "1. New User"
   puts "2. Existing User"
   user_login_answer = gets.chomp
@@ -17,6 +17,12 @@ def user_login
       puts "What is your full name?"
       username = gets.chomp
       returning_user(username)
+      # if User.find_by(name: username) exist
+      #   $current_user = User.find_by(name: username)
+      # else 
+      #   puts "your account is not exist, please create a new account"
+      #   user_create
+      # end
     else
       puts "Please enter 1 or 2"
       user_login
@@ -33,12 +39,16 @@ def returning_user(username)
     returning_user_selection = gets.chomp
       if returning_user_selection == "1"
         job_search
+        #back to main page
       elsif returning_user_selection == "2"
-        puts "wait"#haven'tdoneit
+        puts $current_user.applications
+        #back to main page
       elsif returning_user_selection == "3"
         update_find_by_name(username)
+                #back to main page
       elsif returning_user_selection == "4"
         puts "wait"
+                #back to main page
       elsif returning_user_selection == "5"
         puts "See ya later, alligator!"
       else
@@ -80,8 +90,15 @@ end
 def user_create
   puts "Please enter your full name"
   username = gets.chomp
-  puts "Please enter your birthday (mm/dd/yyyy)"
-  user_birthday =gets.chomp
-  User.create(name: username, birthday: user_birthday)
-  returning_user(username)
+  # if User.find_by(name: username) exist
+  #   puts "you have already had an accout, you will be signed in as a returning user"
+  #   returning_user(username)
+  # else
+    puts "Please enter your birthday (mm/dd/yyyy)"
+    user_birthday =gets.chomp
+    $current_user = User.create(name: username, birthday: user_birthday)
+    returning_user(username)
+  # end
+end
+
 end
