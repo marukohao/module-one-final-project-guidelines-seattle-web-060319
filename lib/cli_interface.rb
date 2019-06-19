@@ -7,7 +7,7 @@ def welcome
 end
 
 def user_login
-  puts "Are you a new user or existing user? Please input a number.".colorize(:color => :light_blue, :background => :red)
+  puts "Are you a new user or existing user? Please input a number."#.colorize(:color => :light_blue, :background => :red)
   puts "1. New User"
   puts "2. Existing User"
   user_login_answer = gets.chomp

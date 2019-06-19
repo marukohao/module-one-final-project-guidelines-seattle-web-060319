@@ -29,7 +29,8 @@ require 'pry'
       puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count})"
       job_choice = gets.chomp
 
-      list_of_jobs[job_choice.to_i - 1]
+      puts list_of_jobs[job_choice.to_i - 1]
+      puts "#{i+1}. Title:#{job_info.title} ----- Company:#{job_info.company} ----- Location:#{job_info.location}"
         puts "Would you like to apply to this job? Yes, no, or exit"
          apply = gets.chomp
           if apply.downcase == "yes"
