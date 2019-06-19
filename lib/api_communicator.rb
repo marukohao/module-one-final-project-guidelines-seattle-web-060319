@@ -28,9 +28,8 @@ require 'pry'
     end
       puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count})"
       job_choice = gets.chomp
-
-      puts list_of_jobs[job_choice.to_i - 1]
-      puts "#{i+1}. Title:#{job_info.title} ----- Company:#{job_info.company} ----- Location:#{job_info.location}"
+      # binding.pry
+        pretty_present(list_of_jobs[job_choice.to_i - 1])
         puts "Would you like to apply to this job? Yes, no, or exit"
          apply = gets.chomp
           if apply.downcase == "yes"
@@ -44,4 +43,13 @@ require 'pry'
             puts "incorrect input"
             present_jobs(list_of_jobs)
           end
-  end
+    end
+
+    def pretty_present(chosen_job)
+      puts "#{i+1}. Title:#{chosen_job.title}".gsub(/\<.*?\>/, "")
+      puts "Company: #{chosen_job.company}".gsub(/\<.*?\>/, "")
+      puts "Location: #{chosen_job.location}".gsub(/\<.*?\>/, "")
+      puts "Description: #{chosen_job.description}".gsub(/\<.*?\>/, "")
+      puts "Full Time: #{chosen_job.fte}".gsub(/\<.*?\>/, "")
+
+    end
