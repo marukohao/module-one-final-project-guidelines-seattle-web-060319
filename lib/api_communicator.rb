@@ -5,6 +5,7 @@ require 'pry'
 
 
   def create_jobs(ui1, ui2 = "", ui3 = "")
+    list_of_jobs = []
     url = "https://jobs.github.com/positions.json?page=1&search=#{ui1}&location=#{ui2}&full_time=#{ui3}"
     resp = RestClient.get(url)
     job_info = JSON.parse(resp)
@@ -15,15 +16,29 @@ require 'pry'
       fte = job_data["type"]
       title = job_data["title"]
       created_at = job_data["created_at"]
-      Job.create(company: company_name, location: location, description: description, fte: fte, title: title, created_at: created_at)
+      list_of_jobs << Job.create(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
       end
-      # puts Job.all
+      # binding.pry
+      present_jobs(list_of_jobs)
   end
 
-  # def get_jobs_from_api(ui1, ui2, ui3 )
-  #   url = "https://jobs.github.com/positions.json?page=1&search=#{ui1}&location=#{ui2}&full_time=#{ui3}"
-  #   resp = RestClient.get(url)
-  #   job_info = JSON.parse(resp)
-  # end
-
-  
+  def present_jobs(list_of_jobs)
+    list_of_jobs.each_with_index do |job_info, i|
+      puts "#{i+1}. Title:#{job_info.title} ----- Company:#{job_info.company} ----- Location:#{job_info.location}"
+    end
+      puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count})"
+      job_choice = gets.chomp.to_i
+      # puts list_of_jobs[job_choice - 1]
+      #   puts "Would you like to apply to this job? Yes, no, or exit"
+      #    apply = gets.chomp
+      #     if apply.downcase == "yes"
+      #       Application.create(user_id: user_id, job_id: Job.all[])
+      #     elsif apply.downcase == "no"
+      #       present_jobs(list_of_jobs)
+      #     elsif apply.downcase == "exit"
+      #       "goodbye."
+      #     else
+      #       puts "incorrect input"
+      #       present_jobs(list_of_jobs)
+      #     end
+  end

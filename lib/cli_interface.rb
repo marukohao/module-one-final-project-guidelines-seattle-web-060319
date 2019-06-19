@@ -49,7 +49,7 @@ end
 
 def job_search
   #user will search for job here
-  puts "Great. What are some keywords you are looking for in a job. It could job title, or languages you use."
+  puts "Great. What are some keywords you are looking for in a job. It could be job title, or languages you use."
   ui1 = gets.chomp
   puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'"
   ui2 = gets.chomp
