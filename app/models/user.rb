@@ -1,7 +1,6 @@
 class User < ActiveRecord::Base
   has_many :applications
-  has_many :languages
-  
+
   # @loggedinUser
 
   # setUser(user):

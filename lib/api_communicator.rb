@@ -31,12 +31,12 @@ require 'pry'
     list_of_jobs.each_with_index do |job_info, i|
       puts "#{i+1}. Title:#{job_info.title} ----- Company:#{job_info.company} ----- Location:#{job_info.location}"
     end
-      puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count} or type #{list_of_jobs.count + 1} to leave this page.)"
+      puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count} or type #{list_of_jobs.count + 1} to go to main menu.)"
       job_choice = gets.chomp.to_i
+      chosen_job = list_of_jobs[job_choice]
       if job_choice == (list_of_jobs.count + 1)
         returning_user(username)
       else
-        chosen_job = list_of_jobs[job_choice.to_i - 1]
         pretty_present(chosen_job)
         puts "Would you like to apply to this job? Please choose a number."
         puts "1. Yes"

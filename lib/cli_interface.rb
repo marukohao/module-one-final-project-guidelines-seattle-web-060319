@@ -14,21 +14,35 @@ class CliInterface
       if user_login_answer == "1"
         user_create
       elsif user_login_answer == "2"
-        puts "What is your full name?"
-        username = gets.chomp
-        puts "Please enter your birthday (mm/dd/yyyy)"
-        user_birthday = gets.chomp
-        if User.find_by(name: username, birthday: user_birthday)
-          $current_user = User.find_by(name: username, birthday: user_birthday)
-          returning_user(username)
-        else
-          puts "Your account does not exist, please create a new account now:"
-          user_create
-        end
+        existing_user_login
       else
         puts "Please enter 1 or 2"
         user_login
       end
+  end
+
+  def existing_user_login
+    puts "What is your full name?"
+    username = gets.chomp
+    puts "Please enter your birthday (mm/dd/yyyy)"
+    user_birthday = gets.chomp
+    if User.find_by(name: username, birthday: user_birthday)
+      $current_user = User.find_by(name: username, birthday: user_birthday)
+      returning_user(username)
+    else
+      puts "Your account does not exist, please make your choice:"
+      puts "1.Create new account"
+      puts "2.Go to login menu"
+      wrong_login = gets.chomp
+      if wrong_login == "1"
+        user_create
+      elsif wrong_login == "2"
+        user_login
+      else
+        puts "Invalid input. Returning you to login menu."
+        user_login
+      end
+    end
   end
 
   def returning_user(username)
