@@ -72,8 +72,8 @@ User Stories
 4. As a user, I want to know how many other users have applied for the specific job.
 5. *As a user, I want to search jobs by languages.
 6. *As a user, I want to able to search jobs by type(part_time, full_time), location, title.(or any combanition)
-7. As a user, I want the 10 newest jobs that have been posted with my search title.
+<!-- 7. As a user, I want the 10 newest jobs that have been posted with my search title. -->
 8. As a user, I want to able to get the job that has been applied to the most/least.
-9. *As a user, I want to change the languages I know. (update)
+<!-- 9. *As a user, I want to change the languages I know. (update) -->
 10. *As a user, I want to delete a application that I have applied.(delete)
 11. AS a user, I want to know if I have already existed in this system.

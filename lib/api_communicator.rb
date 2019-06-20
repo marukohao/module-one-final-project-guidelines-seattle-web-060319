@@ -4,7 +4,7 @@ require 'json'
 require 'pry'
 
 
-  def create_jobs(ui1, ui2 = "", ui3 = "")
+  def create_jobs(ui1, ui2 = "", ui3 = "", username)
     list_of_jobs = []
     url = "https://jobs.github.com/positions.json?page=1&search=#{ui1}&location=#{ui2}&full_time=#{ui3}"
     resp = RestClient.get(url)
@@ -19,34 +19,52 @@ require 'pry'
       list_of_jobs << Job.create(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
       end
       # binding.pry
-      present_jobs(list_of_jobs)
+      if list_of_jobs == [] 
+        puts "Your search produced 0 results."
+        job_search(username)
+      else
+        present_jobs(list_of_jobs, username)
+      end
   end
 
-  def present_jobs(list_of_jobs)
+  def present_jobs(list_of_jobs, username)
     list_of_jobs.each_with_index do |job_info, i|
       puts "#{i+1}. Title:#{job_info.title} ----- Company:#{job_info.company} ----- Location:#{job_info.location}"
     end
       puts "Choose which job you'd like to see more information about.(A number between 1 and #{list_of_jobs.count})"
+      puts "Type 'main menu' to leave this page."
       job_choice = gets.chomp
       # binding.pry
-        pretty_present(list_of_jobs[job_choice.to_i - 1])
-        puts "Would you like to apply to this job? Yes, no, or exit"
-         apply = gets.chomp
-          if apply.downcase == "yes"
-            Application.create(user_id: $current_user.id, job_id: list_of_jobs[job_choice.to_i - 1].id)
-            #back to job list, can start a new job application
-          elsif apply.downcase == "no"
-            present_jobs(list_of_jobs)
-          elsif apply.downcase == "exit"
-            "goodbye."
-          else
-            puts "incorrect input"
-            present_jobs(list_of_jobs)
-          end
+        if job_choice.downcase == "main menu"
+          returning_user(username)
+        else 
+          pretty_present(list_of_jobs[job_choice.to_i - 1])
+          puts "Would you like to apply to this job? Please choose a number."
+          puts "1. Yes"
+          puts "2. No"
+          puts "3. Return to menu"
+          puts "4. Exit"
+          apply = gets.chomp
+            if apply.downcase == "1"
+              Application.create(user_id: $current_user.id, job_id: list_of_jobs[job_choice.to_i - 1].id)
+              # binding.pry
+              puts "Application completed, returning you to your job search."
+              present_jobs(list_of_jobs, username)
+            elsif apply.downcase == "2"
+              present_jobs(list_of_jobs, username)
+            elsif apply.downcase == "3"
+              returning_user(username)
+            elsif apply.downcase == "4"
+              "Goodbye."
+            else
+              puts "incorrect input"
+              present_jobs(list_of_jobs, username)
+            end
+        end
     end
 
     def pretty_present(chosen_job)
-      puts "#{i+1}. Title:#{chosen_job.title}".gsub(/\<.*?\>/, "")
+      puts "Title:#{chosen_job.title}".gsub(/\<.*?\>/, "")
       puts "Company: #{chosen_job.company}".gsub(/\<.*?\>/, "")
       puts "Location: #{chosen_job.location}".gsub(/\<.*?\>/, "")
       puts "Description: #{chosen_job.description}".gsub(/\<.*?\>/, "")

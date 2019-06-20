@@ -16,13 +16,15 @@ def user_login
     elsif user_login_answer == "2"
       puts "What is your full name?"
       username = gets.chomp
-      returning_user(username)
-      # if User.find_by(name: username) exist
-      #   $current_user = User.find_by(name: username)
-      # else 
-      #   puts "your account is not exist, please create a new account"
-      #   user_create
-      # end
+      puts "Please enter your birthday (mm/dd/yyyy)"
+      user_birthday = gets.chomp
+      if User.find_by(name: username, birthday: user_birthday) 
+        $current_user = User.find_by(name: username, birthday: user_birthday)
+        returning_user(username)
+      else 
+        puts "your account does not exist, please create a new account"
+        user_create
+      end
     else
       puts "Please enter 1 or 2"
       user_login
@@ -30,7 +32,7 @@ def user_login
 end
 
 def returning_user(username)
-  puts "Welcome back, #{username}! What would you like to do? Please input a number."
+  puts "Welcome, #{username}! What would you like to do? Please input a number."
   puts "1. Search for a job"
   puts "2. See what jobs I have applied for."
   puts "3. Udpate my information."
@@ -38,16 +40,15 @@ def returning_user(username)
   puts "5. Exit."
     returning_user_selection = gets.chomp
       if returning_user_selection == "1"
-        job_search
+        job_search(username)
         #back to main page
       elsif returning_user_selection == "2"
-        puts $current_user.applications
-        #back to main page
+        display_applications(username)
       elsif returning_user_selection == "3"
         update_find_by_name(username)
                 #back to main page
       elsif returning_user_selection == "4"
-        puts "wait"
+        destroy_application(username)
                 #back to main page
       elsif returning_user_selection == "5"
         puts "See ya later, alligator!"
@@ -57,9 +58,118 @@ def returning_user(username)
       end
 end
 
-def job_search
+def display_applications(username)
+  if $current_user.applications == []
+    puts "You haven't applied for any jobs."
+    job_search(username)
+  else
+    $current_user.applications.each_with_index do |job_info, i|
+      current_job_app = Job.find_by(id: job_info.job_id)
+      puts "#{i+1}. Title:#{current_job_app.title} ----- Company:#{current_job_app.company} ----- Location:#{current_job_app.location}"
+    end
+    puts "What would you like to do now? Please choose a number:"
+    puts "1. Go back to main menu."
+    puts "2. See how many people also applied for the same jobs."
+    puts "3. See job that has the most applications."
+    puts "4. Exit."
+    choice = gets.chomp
+      if choice == "1"
+        returning_user(username)
+      elsif choice == "2"
+        count_applicants(username)
+      elsif choice == "3"
+        most_applications(username)
+      elsif choice == "4"
+        puts "See you later!"
+      else
+        puts "Invalid choice, returning you to the main menu."
+        returning_user(username)
+      end
+    end
+  end
+
+  def most_applications(username)
+    pop_job = Application.group(:job_id).order('COUNT(user_id) DESC').limit(1)
+    # binding.pry
+    most_job_info = Job.find_by(id: pop_job[0].job_id )
+      puts "#{Application.where(job_id:pop_job[0].job_id).count} people applied for this job. Title:#{most_job_info.title} ----- Company:#{most_job_info.company} ----- Location:#{most_job_info.location}"
+      puts "What would you like to do now? Please choose a number:"
+      puts "1. Go back to main menu."
+      puts "2. Exit."
+      choice = gets.chomp
+      if choice == "1"
+        returning_user(username)
+      elsif choice == "2"
+        puts "See you later!"
+      else
+        puts "Invalid choice, returning you to the main menu."
+        returning_user(username)
+      end
+  end
+
+
+
+  def count_applicants(username)
+    $current_user.applications.each_with_index do |job_app, i|
+      job = Job.find_by(id: job_app.job_id)
+      puts "#{i+1}. Amount of people applied: #{Application.where(job_id:job_app.job_id).count} Title:#{job.title} ----- Company:#{job.company} ----- Location:#{job.location}"
+    end
+    puts "What would you like to do now? Please choose a number:"
+      puts "1. Go back to main menu."
+      puts "2. Exit."
+      choice = gets.chomp
+      if choice == "1"
+        returning_user(username)
+      elsif choice == "2"
+        puts "See you later!"
+      else
+        puts "Invalid choice, returning you to the main menu."
+        returning_user(username)
+      end
+      # puts "Would you like to delete any applications? Yes or no?"
+      # delete_app = gets.chomp
+      #   if delete_app.downcase == "yes"
+      #     destroy_application(username)
+      #   elsif delete_app.downcase == "no"
+      #     returning_user(username)
+      #   else
+      #     puts "invalid input"
+      #     display_applications(username)
+      #   end
+    end
+
+def destroy_application(username)
+  $current_user.applications.each_with_index do |job_info, i|
+    current_job_app = Job.find_by(id: job_info.job_id)
+    puts "#{i+1}. Title:#{current_job_app.title} ----- Company:#{current_job_app.company} ----- Location:#{current_job_app.location}"
+  end
+  puts "Choose which application you'd like to delete.(A number between 1 and #{$current_user.applications.count})"
+    job_choice = gets.chomp
+    Application.find($current_user.applications[job_choice.to_i - 1].id).destroy
+    # oldUsername = $current_user.name
+    # dob = $current_user.birthday
+    # $current_user = User.find_by(name: oldUsername, birthday: dob)
+
+  puts "Your application has been destroyed, what would you like to do now? Please choose a number:"
+  puts "1. Go back to main menu."
+  puts "2. See your list of applications."
+  puts "3. Exit."
+    choice = gets.chomp
+    if choice == "1"
+      returning_user(username)
+    elsif choice == "2"
+      display_applications(username)
+    elsif choice == "3"
+      puts "See you later!"
+    else
+      puts "Invalid choice, returning you to the main menu."
+      returning_user(username)
+    end
+end
+
+def job_search(username)
   #user will search for job here
-  puts "Great. What are some keywords you are looking for in a job. It could be job title, or languages you use."
+  puts "Great. What are some keywords you are looking for in a job. It could be job title, languages you use or keywords such as 'diversity'."
   ui1 = gets.chomp
   puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'"
   ui2 = gets.chomp
@@ -72,7 +182,7 @@ def job_search
     else
       ui3 = ""
     end
-  create_jobs(ui1, ui2, ui3)
+  create_jobs(ui1, ui2, ui3, username)
 end
 
 def update_find_by_name(username)
@@ -80,25 +190,43 @@ def update_find_by_name(username)
     new_name = gets.chomp
 user = User.find_by(name: username)
 user.update(name: new_name)
+username = new_name
   puts "Hi #{new_name}, you've successfully updated your information!"
+  puts "What would you like to do now? Please choose a number:"
+  puts "1. Go back to main menu."
+  puts "2. See your list of applications."
+  puts "3. Exit."
+  choice = gets.chomp
+  if choice == "1"
+    returning_user(username)
+  elsif choice == "2"
+    display_applications(username)
+  elsif choice == "3"
+    puts "See you later!"
+  else
+    puts "Invalid choice, returning you to the main menu."
+    returning_user(username)
+  end
 end
 
-def delete
-  puts "Please choose which application you would like to delete."
-end
+# def delete
+#   puts "Please choose which application you would like to delete."
+# end
 
 def user_create
   puts "Please enter your full name"
   username = gets.chomp
-  # if User.find_by(name: username) exist
-  #   puts "you have already had an accout, you will be signed in as a returning user"
-  #   returning_user(username)
-  # else
-    puts "Please enter your birthday (mm/dd/yyyy)"
-    user_birthday =gets.chomp
-    $current_user = User.create(name: username, birthday: user_birthday)
+  puts "Please enter your birthday (mm/dd/yyyy)"
+  user_birthday =gets.chomp
+  if User.find_by(name: username, birthday: user_birthday) 
+    puts "You have already had an account, you will be signed in as a returning user"
+    $current_user = User.find_by(name: username, birthday: user_birthday)
     returning_user(username)
-  # end
+  else
+    $current_user = User.create(name: username, birthday: user_birthday)
+    puts "Your account has been created."
+    returning_user(username)
+  end
 end
 
 end

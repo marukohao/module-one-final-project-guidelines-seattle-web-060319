@@ -9,4 +9,6 @@ require 'pry'
 cli = CliInterface.new
 cli.user_login
 
+binding.pry
+
 
