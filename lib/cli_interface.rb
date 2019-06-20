@@ -100,10 +100,10 @@ class CliInterface
   end
 
   def most_applications(username)
-    pop_job = Application.group(:job_id).order('COUNT(user_id) DESC').limit(1)
+    pop_job = Application.group(:title, :company, :location).order('COUNT(user_id) DESC').limit(1)
     # binding.pry
-    most_job_info = Job.find_by(id: pop_job[0].job_id )
-      puts "#{Application.where(job_id:pop_job[0].job_id).count} person(s) applied for this job. Title:#{most_job_info.title} ----- Company:#{most_job_info.company} ----- Location:#{most_job_info.location}"
+    most_job_info = Job.find_by(title: pop_job[0].title, location: pop_job[0].location, company: pop_job[0].company)
+      puts "#{Application.where(title: pop_job[0].title, location: pop_job[0].location, company: pop_job[0].company).count} person(s) applied for this job. Title:#{most_job_info.title} ----- Company:#{most_job_info.company} ----- Location:#{most_job_info.location}"
       puts "What would you like to do now? Please choose a number:"
       puts "1. Go back to main menu."
       puts "2. Exit."
@@ -121,7 +121,7 @@ class CliInterface
   def count_applicants(username)
     $current_user.applications.each_with_index do |job_app, i|
       job = Job.find_by(id: job_app.job_id)
-      puts "#{i+1}. Number of person(s) applied: #{Application.where(job_id:job_app.job_id).count} Title:#{job.title} ----- Company:#{job.company} ----- Location:#{job.location}"
+      puts "#{i+1}. Number of person(s) applied: #{Application.where(title: job_app.title, location: job_app.location, company: job_app.company).count} Title:#{job.title} ----- Company:#{job.company} ----- Location:#{job.location}"
     end
     puts "What would you like to do now? Please choose a number:"
       puts "1. Go back to main menu."
