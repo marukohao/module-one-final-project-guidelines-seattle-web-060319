@@ -16,13 +16,7 @@ require 'pry'
       fte = job_data["type"]
       title = job_data["title"]
       created_at = job_data["created_at"]
-      existing_job = Job.find_by(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
-      # binding.pry
-      if existing_job
-        list_of_jobs << existing_job
-      elsif
-        list_of_jobs << Job.create(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
-      end
+      list_of_jobs << Job.find_or_create_by(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
     end
         if list_of_jobs == []
           puts "Your search produced 0 results."
