@@ -6,6 +6,8 @@ require 'pry'
 
   def create_jobs(ui1, ui2 = "", ui3 = "", username)
     system("clear")
+    puts "Here are the job results that returned"
+    spacing
     list_of_jobs = []
     url = "https://jobs.github.com/positions.json?page=1&search=#{ui1}&location=#{ui2}&full_time=#{ui3}"
     resp = RestClient.get(url)
@@ -20,7 +22,7 @@ require 'pry'
       list_of_jobs << Job.find_or_create_by(title: title, company: company_name, location: location, description: description, fte: fte, created_at: created_at)
     end
         if list_of_jobs == []
-          puts "Your search produced 0 results.".colorize(:red)
+          puts "Your search produced 0 results. Try a new job search".colorize(:red)
           job_search(username)
         else
           present_jobs(list_of_jobs, username)
@@ -48,10 +50,10 @@ require 'pry'
         puts "3. Return to menu".colorize(:light_blue)
         puts "4. Exit".colorize(:light_blue)
         apply = gets.chomp
-        system("clear")
         if apply.downcase == "1"
           system("clear")
           if Application.find_by(user_id: $current_user.id, job_id: chosen_job.id, title: chosen_job.title, company: chosen_job.company, location: chosen_job.location)
+            system("clear")
             puts "You have already applied for this job.".colorize(:red)
             present_jobs(list_of_jobs, username)
           else
@@ -68,7 +70,7 @@ require 'pry'
           returning_user(username)
         elsif apply.downcase == "4"
           system("clear")
-          "Goodbye. See you later, alligator".colorize(:light_blue)
+          see_ya_later
         else
           system("clear")
           puts "Incorrect input".colorize(:light_blue)

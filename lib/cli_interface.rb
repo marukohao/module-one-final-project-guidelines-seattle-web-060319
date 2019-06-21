@@ -8,8 +8,8 @@ class CliInterface
     puts " / ____(_) | | |  | |     | |          | |     | |"
     puts "| |  __ _| |_| |__| |_   _| |__        | | ___ | |__  ___".colorize(:light_blue)
     puts "| | |_ | | __|  __  | | | | '_ \\   _   | |/ _ \\| '_ \\/ __|".colorize(:light_blue)
-    puts "| |__| | | |_| |  | | |_| | |_) | | |__| | (_) | |_) \\__ \\".colorize(:light_blue)
-    puts " \\_____|_|\\__|_|  |_|\\__,_|_.__/   \\____/ \\___/|_.__/|___/".colorize(:light_blue)
+    puts "| |__| | | |_| |  | | |_| | |_) | | |__| | (_) | |_) \\__ \\".colorize(:blue)
+    puts " \\_____|_|\\__|_|  |_|\\__,_|_.__/   \\____/ \\___/|_.__/|___/".colorize(:blue)
     spacing
     puts "Hello! Welcome to Github Jobs!"
   end
@@ -78,7 +78,7 @@ class CliInterface
           destroy_application(username)
         elsif returning_user_selection == "5"
           system("clear")
-          puts "See ya later, alligator!"
+          see_ya_later
         else
           puts "You've made the wrong selection, please start again.".colorize(:red)
           returning_user(username)
@@ -92,6 +92,8 @@ class CliInterface
       puts "You haven't applied for any jobs.".colorize(:red)
       job_search(username)
     else
+      puts "Here are the jobs you have applied for:".colorize(:light_blue)
+      spacing
       $current_user.applications.each_with_index do |job_info, i|
         current_job_app = Job.find_by(id: job_info.job_id)
         puts "#{i+1}. Title:#{current_job_app.title} ----- Company:#{current_job_app.company} ----- Location:#{current_job_app.location}".colorize(:light_blue)
@@ -112,7 +114,7 @@ class CliInterface
         most_applications(username)
       elsif choice == "4"
         system("clear")
-        puts "See you later!"
+        see_ya_later
       else
         puts "Invalid choice, returning you to the main menu.".colorize(:red)
         returning_user(username)
@@ -123,6 +125,8 @@ class CliInterface
 
   def most_applications(username)
     system("clear")
+    puts "Job with the most applications:".colorize(:light_blue)
+    spacing
     pop_job = Application.group(:title, :company, :location).order('COUNT(user_id) DESC').limit(1)
     # binding.pry
     most_job_info = Job.find_by(title: pop_job[0].title, location: pop_job[0].location, company: pop_job[0].company)
@@ -136,7 +140,7 @@ class CliInterface
       if choice == "1"
         returning_user(username)
       elsif choice == "2"
-        puts "See you later!".colorize(:light_blue)
+        see_ya_later
       else
         puts "Invalid choice, returning you to the main menu.".colorize(:red)
         returning_user(username)
@@ -145,6 +149,8 @@ class CliInterface
   end
 
   def count_applicants(username)
+    puts "Amount of people who applied to the same jobs:".colorize(:light_blue)
+    spacing
     $current_user.applications.each_with_index do |job_app, i|
       job = Job.find_by(id: job_app.job_id)
       puts "#{i+1}. Number of person(s) applied: #{Application.where(title: job_app.title, location: job_app.location, company: job_app.company).count} Title:#{job.title} ----- Company:#{job.company} ----- Location:#{job.location}".colorize(:light_blue)
@@ -156,7 +162,7 @@ class CliInterface
       if choice == "1"
         returning_user(username)
       elsif choice == "2"
-        puts "See you later!".colorize(:light_blue)
+        see_ya_later
       else
         puts "Invalid choice, returning you to the main menu.".colorize(:red)
         returning_user(username)
@@ -166,6 +172,8 @@ class CliInterface
 
   def destroy_application(username)
     system("clear")
+    puts "Current Applications:".colorize(:light_blue)
+    spacing
     $current_user.applications.each_with_index do |job_info, i|
       current_job_app = Job.find_by(id: job_info.job_id)
       puts "#{i+1}. Title:#{current_job_app.title} ----- Company:#{current_job_app.company} ----- Location:#{current_job_app.location}".colorize(:light_blue)
@@ -185,7 +193,7 @@ class CliInterface
       elsif choice == "2"
         display_applications(username)
       elsif choice == "3"
-        puts "See you later!".colorize(:light_blue)
+        see_ya_later
       else
         puts "Invalid choice, returning you to the main menu.".colorize(:red)
         returning_user(username)
@@ -194,7 +202,6 @@ class CliInterface
   end
 
   def job_search(username)
-    system("clear")
     puts "Welcome to your job search. What are some keywords you are looking for in a job. It could be job title, languages you use or keywords such as 'diversity'.".colorize(:light_blue)
     ui1 = gets.chomp
     puts "Great, please enter a location by city, then state. e.g 'Seattle, WA'".colorize(:light_blue)
@@ -231,7 +238,7 @@ class CliInterface
     elsif choice == "2"
       display_applications(username)
     elsif choice == "3"
-      puts "See you later!".colorize(:light_blue)
+      see_ya_later
     else
       puts "Invalid choice, returning you to the main menu.".colorize(:red)
       returning_user(username)
@@ -259,7 +266,19 @@ class CliInterface
   end
 
   def spacing
-    puts "---------------------------------------------------------------------------------------"
+    puts "---------------------------------------------------------------------------------------------------"
+  end
+
+  def see_ya_later
+puts "See ya later, ".colorize(:light_blue)
+puts "           _  _".colorize(:green)
+puts " _ _      (0)(0)-._  _.-'^^'^^'^^'^^'^^'--.".colorize(:green)
+puts "(.(.)----'`        ^^'                /^   ^^-._".colorize(:green)
+puts "(    `                 \\             |    _    ^^-._".colorize(:green)
+puts "VvvvvvvVv~~`__,/.._>  /:/:/:/:/:/:/:/\\  (_..,______^^-.".colorize(:green)
+puts "     `^^^^^^^^`/  /   /  /`^^^^^^^^^>^^>^`>  >        _`)  )".colorize(:green)
+puts "             (((`   (((`          (((`  (((`        `'--'^".colorize(:green)
+
   end
 
 end
