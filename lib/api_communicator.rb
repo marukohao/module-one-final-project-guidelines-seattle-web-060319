@@ -48,7 +48,7 @@ require 'pry'
       puts "3. Return to menu".colorize(:light_blue)
       puts "4. Exit".colorize(:light_blue)
       apply = gets.chomp
-      # system("clear")
+      system("clear")
       if apply == "1"
         if Application.find_by(user_id: $current_user.id, job_id: chosen_job.id, title: chosen_job.title, company: chosen_job.company, location: chosen_job.location)
           puts "You have already applied for this job.".colorize(:red)
@@ -59,17 +59,13 @@ require 'pry'
           present_jobs(list_of_jobs, username)
         end
       elsif apply == "2"
-        system("clear")
         puts "Sorry you didn't like that job, here are your results again:"
         present_jobs(list_of_jobs, username)
       elsif apply == "3"
-        system("clear")
         returning_user(username)
       elsif apply == "4"
-        system("clear")
         see_ya_later
       else
-        system("clear")
         puts "Incorrect input".colorize(:light_blue)
         present_jobs(list_of_jobs, username)
       end

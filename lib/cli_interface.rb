@@ -106,6 +106,7 @@ class CliInterface
       puts "3. See job that has the most applications.".colorize(:light_blue)
       puts "4. Exit.".colorize(:light_blue)
       choice = gets.chomp
+      system("clear")
       if choice == "1"
         returning_user(username)
       elsif choice == "2"
