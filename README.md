@@ -14,17 +14,30 @@ Github Jobs Finder will help you find and apply for jobs. You can search, apply,
    * applications(user id, job id, title, location, company)
    * Jobs(company, location, title, description, type, created at)
 
-   ![](images/Current_Applications.png)
+##### Video demonstration
 
-
+  [GitHub Job Finder](https://youtu.be/4M6DTdVyGTo)
 ##### User Stories
 
-As a user, I should be able to:
-  * enter my name and retrieve all the jobs that I have applied.
+  As a user, I should be able to:
+  * create a new account
+  ![](images/Welcome.png)
+  * Login to my account and retrieve all the jobs that I have applied.
+
+  ![](images/Current_Applications.png)
+
   * know if I already exist in this system.
-  *  search job descriptions for keywords like 'diversity'
-  * to know how many other users have applied for the same jobs.
+
+  ![](images/Main_menu.png)
   * to search jobs by languages used.
+  *  search job descriptions for keywords like 'diversity'.
   *  search jobs by type(part_time, full_time), location, title.
+  ![](images/jobsearchresults.png)
+
+  ![](images/Expanding_Job_Description.png)
+  * to know how many other users have applied for the same jobs.
+
   * find the job that has been applied to the most.
+  ![](images/Most_applicants.png)
   * to delete a application that I have applied to.
+  ![](images/destroy.png)

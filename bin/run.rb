@@ -10,4 +10,4 @@ cli = CliInterface.new
 cli.welcome
 cli.user_login
 
-binding.pry
+# binding.pry
