@@ -89,10 +89,12 @@ class CliInterface
 
   def display_applications(username)
     if $current_user.applications.count == 0
+      system("clear")
       puts "You haven't applied for any jobs. Let's get you started on your job search".colorize(:red)
       spacing
       job_search(username)
     else
+      system("clear")
       puts "Here are the jobs you have applied for:".colorize(:light_blue)
       spacing
       Application.where(user_id: $current_user.id).each_with_index do |job_info, i|
@@ -174,7 +176,6 @@ class CliInterface
     system("clear")
     if Application.where(user_id: $current_user.id) == []
       puts "You don't have any applications to delete.".colorize(:red)
-
     else
       puts "Current Applications:".colorize(:light_blue)
       spacing
@@ -182,11 +183,11 @@ class CliInterface
         current_job_app = Job.find_by(id: job_info.job_id)
         puts "#{i+1}. Title:#{current_job_app.title} ----- Company:#{current_job_app.company} ----- Location:#{current_job_app.location}".colorize(:light_blue)
         spacing
+      end
         puts "Choose which application you'd like to delete.(A number between 1 and #{$current_user.applications.count})".colorize(:light_blue)
         job_choice = gets.chomp
         $current_user.applications.destroy(Application.where(user_id: $current_user.id)[job_choice.to_i - 1].id)
         puts "Your application has been destroyed."
-      end
     end
     puts "What would you like to do now? Please choose a number:".colorize(:light_blue)
     puts "1. Go back to main menu.".colorize(:light_blue)
@@ -257,7 +258,7 @@ class CliInterface
     puts "Please enter your birthday (mm/dd/yyyy)".colorize(:light_blue)
     user_birthday =gets.chomp
     if User.find_by(name: username, birthday: user_birthday)
-      puts "You already have an account, you will be signed now.".colorize(:red)
+      puts "You already have an account, you will be sent to login now.".colorize(:red)
       spacing
       $current_user = User.find_by(name: username, birthday: user_birthday)
       returning_user(username)
